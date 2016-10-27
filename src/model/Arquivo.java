@@ -124,40 +124,37 @@ public class Arquivo {
 
 	public static void criaArray(){
 		
-		int maior_id_usuario = 4 ; 
+		int maior_id_usuario = 4 ; //quantidade de usuarios
 		int busca_maior = 0;
+		
 		for (int i = 0; i < arquivoBase.size(); i++) {
 			
-			
-			int maior_item = Integer.parseInt(arquivoBase.get(i).itemId);
-			
+			//busca o maior número de item
+			int maior_item = Integer.parseInt(arquivoBase.get(i).itemId);			
 			if (maior_item > busca_maior ){
 				busca_maior = maior_item;
 			}
 			
 		}
 		
+		//Matriz refente a tabela associativa de usuario e produto
 		Integer matriz[][] = new Integer [maior_id_usuario][busca_maior];
 		
 		for (int i =0; i < maior_id_usuario; i++) {
 			for (int j = 0; j < busca_maior; j++) {
-				
+				//inicializando a matriz com zeros, para os produtos que não for avaliado ser idetificados
 				matriz[i][j] = 0;
 			}
 		}
 		
-		
+		// preenchimento da matriz com as informações obtidas pelo u1.base, u2.base, ...
 		try {
 			int k=0;
 			for (int i = 0; i < maior_id_usuario; i++) {
 				for (int j = 0; j < busca_maior-1; j++) {
-					
-					///System.out.println("k="+k);
-					//System.out.println("item= " +arquivoBase.get(k).itemId);
-					//System.out.println("j= " +j);
-					
-					if((j+1) == Integer.parseInt(arquivoBase.get(k).itemId)){
-						matriz[i+1][j+1] = Integer.parseInt(arquivoBase.get(k).rating);
+										
+					if((j+1) == Integer.parseInt(arquivoBase.get(k).itemId)){ //comparação para verificar se o item foi avaliado pelo usuario
+						matriz[i+1][j+1] = Integer.parseInt(arquivoBase.get(k).rating); //atribuição da nota na posição referente ao usuario e o item
 						System.out.println("Matriz ["+(i+1)+"]["+(j+1)+"] = "+matriz[i+1][j+1]);
 						k++;
 					}else{
@@ -174,6 +171,7 @@ public class Arquivo {
 		
 	}
 
+	//metodo para calcular erro medio RMSE
 	public static void erro_rmse (){
 		//System.out.println(arquivoBase.get(1).rating);
 		//System.out.println(arquivoTeste.get(1).rating);
