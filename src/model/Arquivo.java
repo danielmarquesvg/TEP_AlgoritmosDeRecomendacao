@@ -13,7 +13,7 @@ import javax.swing.JOptionPane;
 
 public class Arquivo {
 	
-	static Aleatoria aleatoria = new Aleatoria();
+	//static Aleatoria aleatoria = new Aleatoria();
 	
 	static FileReader fileReaderArquivoBase;
 	static FileReader fileReaderArquivoTeste;
