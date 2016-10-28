@@ -1,21 +1,19 @@
 package model;
 
-import javax.naming.ldap.SortControl;
-
 public class SistemaColaborativo {
 
 	Arquivo arquivo = new Arquivo();
-	double array_similaridade [] = new double [4];
+	double array_similaridade [] = new double [3];
 	
-	public void print(Integer matriz [][]){
+	public void print(Integer matriz [][][]){
 		//Integer matriz_sc[][] = arquivo.criaArray();
-		Integer matriz_sc[][] = matriz;
+		Integer matriz_sc[][][] = matriz;
 		
 		try {
-			for (int i = 0; i < 4; i++) {
-				for (int j = 0; j < 1681; j++) {
-					System.out.println();
-					System.out.println("MatrizSC ["+(i+1)+"]["+(j+1)+"] = "+matriz_sc[i+1][j+1]);
+			for (int i = 0; i < 3; i++) {
+				for (int j = 0; j < matriz[0].length; j++) {
+					
+					System.out.println("MatrizSC ["+(i+1)+"]["+(j+1)+"] = "+matriz_sc[i+1][j+1][0]+" Flag = " + matriz_sc[i+1][j+1][1]);
 				}
 				
 			}
@@ -27,8 +25,8 @@ public class SistemaColaborativo {
 	
 	public void preparaArray(Integer matriz [][]) {
 		
-		int array_usuarioAnalise [] = new int [1681]; //Notas do usuario para realizar predição
-		int array_usuarioCompara []	= new int [1681]; //Notas do usuario para buscar vizinho mais proximo
+		int array_usuarioAnalise [] = new int [1682]; //Notas do usuario para realizar predição
+		int array_usuarioCompara []	= new int [1682]; //Notas do usuario para buscar vizinho mais proximo
 		
 		
 		int usuario = 1;
@@ -41,7 +39,7 @@ public class SistemaColaborativo {
 				//System.out.println("array_usuarioAnalise = " +array_usuarioAnalise [j]);
 			}
 			
-			while(proximoUsuario < 1681){
+			while(proximoUsuario < 1682){
 				
 				if(usuario == proximoUsuario){ //Verifica proximo usuario, para não comparar com  ele proprio
 					proximoUsuario++;	//Se for igual, incrementa para buscar o proximo usuario
@@ -67,6 +65,7 @@ public class SistemaColaborativo {
 		double somatorioAnalise = 0;
 		double somatorioCompara = 0;
 		double similaridade = 0;
+		int contador_avaliacao=0;
 		
 		for (int i = 0; i < array_usuarioCompara.length; i++) {
 						 
@@ -74,13 +73,18 @@ public class SistemaColaborativo {
 				mult_array += array_usuarioAnalise[i]*array_usuarioCompara[i];    // então, realiza-se o somatorio da multicação das notas
 				somatorioAnalise += Math.pow(array_usuarioAnalise[i], 2.0); //somatorio da potencia das notas avalidada pelo usuario 1
 				somatorioCompara += Math.pow(array_usuarioCompara[i], 2.0);//somatorio da potencia das notas avalidada pelo usuario 2
-
+				contador_avaliacao++;
 			}
 		}
 		
-		similaridade = mult_array / (Math.sqrt(somatorioAnalise) * Math.sqrt(somatorioCompara)); //Calculo da formula da similaridade
-		System.out.println("Similarida = " + similaridade);
-		array_similaridade [usuario] = similaridade; //guarda resultados da porcentagem de todos os usuarios
+		if(contador_avaliacao >= 2){ //verifica se houve mais de uma aviação em comum entre os usuarios
+			similaridade = mult_array / (Math.sqrt(somatorioAnalise) * Math.sqrt(somatorioCompara)); //Calculo da formula da similaridade
+			System.out.println("Similarida = " + similaridade);
+			array_similaridade [usuario] = similaridade; //guarda resultados da porcentagem de todos os usuarios
+		}else{
+			array_similaridade [usuario] = 0;
+		}
+		
 	}
 	
 	public void verificaVizinhoMaisProximo(int qntVizinhos){

@@ -22,6 +22,9 @@ public class Arquivo {
 	static ArrayList<Registro> arquivoTeste = new ArrayList<Registro>();
 	static ArrayList<Registro> arquivoPredicao = new ArrayList<Registro>();
 	
+	static int maiorIdDoUsuario = 0;
+	static int maiorIdDoItem = 0;
+	
 	public static void carregarArquivos(FileReader fileReaderBase, FileReader fileReaderTeste){
 		fileReaderArquivoBase = fileReaderBase;
 		fileReaderArquivoTeste = fileReaderTeste;
@@ -62,6 +65,13 @@ public class Arquivo {
 				Registro registro = new Registro(userId, itemId, rating, timeStamp);
 				arquivoBase.add(registro);
 				
+				if(Integer.parseInt(userId)> maiorIdDoUsuario){
+					maiorIdDoUsuario = Integer.parseInt(userId);
+				}
+				
+				if(Integer.parseInt(itemId)> maiorIdDoItem){
+					maiorIdDoItem = Integer.parseInt(itemId);
+				}
 				linhaArquivoBase = bufferedReaderArquivoBase.readLine();
 			}
 			
@@ -101,9 +111,9 @@ public class Arquivo {
 		
 		
 		SistemaColaborativo p = new SistemaColaborativo();
-		Integer aux [][] = criaArray();
-		//p.print(aux);
-		p.preparaArray(aux);
+		Integer aux [][][] = criaArray();
+		p.print(aux);
+		//p.preparaArray(aux);
 		
 		//System.out.print(arquivoTeste.get(0).userId+" "+arquivoTeste.get(0).itemId+" "+arquivoTeste.get(0).rating+" "+arquivoTeste.get(0).timeStamp+"\n");
 		//System.out.print(arquivoTeste.get(1).userId+" "+arquivoTeste.get(1).itemId+" "+arquivoTeste.get(1).rating+" "+arquivoTeste.get(1).timeStamp+"\n");
@@ -112,12 +122,13 @@ public class Arquivo {
 		
 	}
 
-	public static Integer[][] criaArray(){
+	public static Integer[][][] criaArray(){
 		
-		int maior_id_usuario = 4 ; //quantidade de usuarios
-		int busca_maior = 0; //maior id item
 		
-		for (int i = 0; i < arquivoBase.size(); i++) {
+		//int maior_id_usuario = maiorIdDoUsuario ; //quantidade de usuarios
+		int maior_id_item = maiorIdDoItem; //maior id item
+		int maior_id_usuario = 3;
+		/*for (int i = 0; i < arquivoBase.size(); i++) {
 			
 			//busca o maior número de item
 			int maior_id_item = Integer.parseInt(arquivoBase.get(i).itemId);			
@@ -125,15 +136,17 @@ public class Arquivo {
 				busca_maior = maior_id_item;
 			}
 			
-		}
+		}*/
 		
 		//Matriz refente a tabela associativa de usuario e produto
-		Integer matriz[][] = new Integer [maior_id_usuario+1][busca_maior+1];
+		Integer matriz[][][] = new Integer [maior_id_usuario+1][maior_id_item+1][2];
 		
-		for (int i =0; i < maior_id_usuario; i++) {
-			for (int j = 0; j < busca_maior; j++) {
+		for (int i =0; i < matriz.length; i++) {
+			for (int j = 0; j < matriz[0].length; j++) {
 				//inicializando a matriz com zeros, para os produtos que não for avaliado ser idetificados
-				matriz[i][j] = 0;
+				matriz[i][j][0] = 0; //rating 
+				matriz[i][j][1] = -1;//flag para verificar se estar dentro do arquivo .teste 
+									// -1 não está no arquivo base
 			}
 		}
 		
@@ -141,14 +154,16 @@ public class Arquivo {
 		try {
 			int k=0;
 			for (int i = 0; i < maior_id_usuario; i++) {
-				for (int j = 0; j < busca_maior-1; j++) {
+				for (int j = 0; j < maior_id_item-1; j++) {
 										
 					if((j+1) == Integer.parseInt(arquivoBase.get(k).itemId)){ //comparação para verificar se o item foi avaliado pelo usuario
-						matriz[i+1][j+1] = Integer.parseInt(arquivoBase.get(k).rating); //atribuição da nota na posição referente ao usuario e o item
-						//System.out.println("Matriz ["+(i+1)+"]["+(j+1)+"] = "+matriz[i+1][j+1]);
+						matriz[i+1][j+1][0] = Integer.parseInt(arquivoBase.get(k).rating); //atribuição da nota na posição referente ao usuario e o item
+						matriz[i+1][j+1][1] = 1;
+						//System.out.println("Matriz ["+(i+1)+"]["+(j+1)+"] = "+matriz[i+1][j+1][0]+ " Flag = " +matriz[i+1][j+1][1]) ;
 						k++;
 					}else{
-						//System.out.println("Matriz ["+(i+1)+"]["+(j+1)+"] = "+matriz[i+1][j+1]);
+						
+						//System.out.println("Matriz ["+(i+1)+"]["+(j+1)+"] = "+matriz[i+1][j+1][0]+ " Flag = " +matriz[i+1][j+1][1]) ;
 					}
 					
 				}
