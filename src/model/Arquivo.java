@@ -105,9 +105,9 @@ public class Arquivo {
 		//p.print(aux);
 		p.preparaArray(aux);
 		
-		System.out.print(arquivoTeste.get(0).userId+" "+arquivoTeste.get(0).itemId+" "+arquivoTeste.get(0).rating+" "+arquivoTeste.get(0).timeStamp+"\n");
-		System.out.print(arquivoTeste.get(1).userId+" "+arquivoTeste.get(1).itemId+" "+arquivoTeste.get(1).rating+" "+arquivoTeste.get(1).timeStamp+"\n");
-		System.out.print(arquivoTeste.get(2).userId+" "+arquivoTeste.get(2).itemId+" "+arquivoTeste.get(2).rating+" "+arquivoTeste.get(2).timeStamp+"\n");
+		//System.out.print(arquivoTeste.get(0).userId+" "+arquivoTeste.get(0).itemId+" "+arquivoTeste.get(0).rating+" "+arquivoTeste.get(0).timeStamp+"\n");
+		//System.out.print(arquivoTeste.get(1).userId+" "+arquivoTeste.get(1).itemId+" "+arquivoTeste.get(1).rating+" "+arquivoTeste.get(1).timeStamp+"\n");
+		//System.out.print(arquivoTeste.get(2).userId+" "+arquivoTeste.get(2).itemId+" "+arquivoTeste.get(2).rating+" "+arquivoTeste.get(2).timeStamp+"\n");
 
 		
 	}
@@ -145,10 +145,10 @@ public class Arquivo {
 										
 					if((j+1) == Integer.parseInt(arquivoBase.get(k).itemId)){ //comparação para verificar se o item foi avaliado pelo usuario
 						matriz[i+1][j+1] = Integer.parseInt(arquivoBase.get(k).rating); //atribuição da nota na posição referente ao usuario e o item
-						System.out.println("Matriz ["+(i+1)+"]["+(j+1)+"] = "+matriz[i+1][j+1]);
+						//System.out.println("Matriz ["+(i+1)+"]["+(j+1)+"] = "+matriz[i+1][j+1]);
 						k++;
 					}else{
-						System.out.println("Matriz ["+(i+1)+"]["+(j+1)+"] = "+matriz[i+1][j+1]);
+						//System.out.println("Matriz ["+(i+1)+"]["+(j+1)+"] = "+matriz[i+1][j+1]);
 					}
 					
 				}

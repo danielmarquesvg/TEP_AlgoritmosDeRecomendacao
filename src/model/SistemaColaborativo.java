@@ -38,7 +38,7 @@ public class SistemaColaborativo {
 			
 			for (int j = 0; j < array_usuarioAnalise.length; j++) {
 				array_usuarioAnalise [j] = matriz [usuario][j+1]; //Atribuir notas do usuario 1
-				System.out.println("array_usuarioAnalise = " +array_usuarioAnalise [j]);
+				//System.out.println("array_usuarioAnalise = " +array_usuarioAnalise [j]);
 			}
 			
 			while(proximoUsuario < 1681){
@@ -48,7 +48,7 @@ public class SistemaColaborativo {
 				}else{
 					for (int j = 0; j < array_usuarioAnalise.length; j++) {
 						array_usuarioCompara [j] = matriz [proximoUsuario][j+1]; ////Atribuir notas do usuario 2
-						System.out.println("array_usuarioCompara = " +array_usuarioCompara [j]);
+						//System.out.println("array_usuarioCompara = " +array_usuarioCompara [j]);
 					}
 					calculaSimilaridade(array_usuarioAnalise, array_usuarioCompara, proximoUsuario);
 					proximoUsuario++; //incrementa para buscar novo usuario, para ser comparado
@@ -79,7 +79,7 @@ public class SistemaColaborativo {
 		}
 		
 		similaridade = mult_array / (Math.sqrt(somatorioAnalise) * Math.sqrt(somatorioCompara)); //Calculo da formula da similaridade
-		
+		System.out.println("Similarida = " + similaridade);
 		array_similaridade [usuario] = similaridade; //guarda resultados da porcentagem de todos os usuarios
 	}
 	
