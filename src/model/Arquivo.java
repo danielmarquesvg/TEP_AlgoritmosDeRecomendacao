@@ -48,11 +48,7 @@ public class Arquivo {
 			arquivo.createNewFile();
 			 
 			//cria um diretório
-			arquivo.mkdir();	
-			
-			 
-			
-			
+			arquivo.mkdir();			
 
 			
 			while(linhaArquivoBase != null){
@@ -103,42 +99,36 @@ public class Arquivo {
 			e.printStackTrace();
 		}
 		
-		criaArray();
+		
+		SistemaColaborativo p = new SistemaColaborativo();
+		Integer aux [][] = criaArray();
+		//p.print(aux);
+		p.preparaArray(aux);
 		
 		System.out.print(arquivoTeste.get(0).userId+" "+arquivoTeste.get(0).itemId+" "+arquivoTeste.get(0).rating+" "+arquivoTeste.get(0).timeStamp+"\n");
 		System.out.print(arquivoTeste.get(1).userId+" "+arquivoTeste.get(1).itemId+" "+arquivoTeste.get(1).rating+" "+arquivoTeste.get(1).timeStamp+"\n");
 		System.out.print(arquivoTeste.get(2).userId+" "+arquivoTeste.get(2).itemId+" "+arquivoTeste.get(2).rating+" "+arquivoTeste.get(2).timeStamp+"\n");
 
-		//System.out.print(arquivoBase.get(1).userId+" "+arquivoBase.get(1).itemId+" "+arquivoBase.get(1).rating+" "+arquivoBase.get(1).timeStamp+"\n");
-		//System.out.print(arquivoBase.get(2).userId+" "+arquivoBase.get(2).itemId+" "+arquivoBase.get(2).rating+" "+arquivoBase.get(2).timeStamp+"\n");
-		//System.out.print(arquivoBase.get(3).userId+" "+arquivoBase.get(3).itemId+" "+arquivoBase.get(3).rating+" "+arquivoBase.get(3).timeStamp+"\n");
-		//System.out.print(arquivoBase.get(4).userId+" "+arquivoBase.get(4).itemId+" "+arquivoBase.get(4).rating+" "+arquivoBase.get(4).timeStamp+"\n");
-		System.out.println();
-		System.out.println();
-		//System.out.print(arquivoPredicao.get(0).userId+" "+arquivoPredicao.get(0).itemId+" "+arquivoPredicao.get(0).rating+" "+arquivoPredicao.get(0).timeStamp+"\n");
-		//System.out.print(arquivoPredicao.get(1).userId+" "+arquivoPredicao.get(1).itemId+" "+arquivoPredicao.get(1).rating+" "+arquivoPredicao.get(1).timeStamp+"\n");
-		//System.out.print(arquivoPredicao.get(2).userId+" "+arquivoPredicao.get(2).itemId+" "+arquivoPredicao.get(2).rating+" "+arquivoPredicao.get(2).timeStamp+"\n");
-
 		
 	}
 
-	public static void criaArray(){
+	public static Integer[][] criaArray(){
 		
 		int maior_id_usuario = 4 ; //quantidade de usuarios
-		int busca_maior = 0;
+		int busca_maior = 0; //maior id item
 		
 		for (int i = 0; i < arquivoBase.size(); i++) {
 			
 			//busca o maior número de item
-			int maior_item = Integer.parseInt(arquivoBase.get(i).itemId);			
-			if (maior_item > busca_maior ){
-				busca_maior = maior_item;
+			int maior_id_item = Integer.parseInt(arquivoBase.get(i).itemId);			
+			if (maior_id_item > busca_maior ){
+				busca_maior = maior_id_item;
 			}
 			
 		}
 		
 		//Matriz refente a tabela associativa de usuario e produto
-		Integer matriz[][] = new Integer [maior_id_usuario][busca_maior];
+		Integer matriz[][] = new Integer [maior_id_usuario+1][busca_maior+1];
 		
 		for (int i =0; i < maior_id_usuario; i++) {
 			for (int j = 0; j < busca_maior; j++) {
@@ -168,7 +158,7 @@ public class Arquivo {
 			System.out.println("Carregamento concluido");
 		}
 		
-		
+		return matriz;
 	}
 
 	//metodo para calcular erro medio RMSE
