@@ -126,9 +126,9 @@ public class Arquivo {
 	public static Integer[][][] criaArray(){
 		
 		
-		//int maior_id_usuario = maiorIdDoUsuario ; //quantidade de usuarios
+		int maior_id_usuario = maiorIdDoUsuario ; //quantidade de usuarios
 		int maior_id_item = maiorIdDoItem; //maior id item
-		int maior_id_usuario = 3;
+		//int maior_id_usuario = 3;
 		/*for (int i = 0; i < arquivoBase.size(); i++) {
 			
 			//busca o maior número de item
@@ -186,7 +186,7 @@ public class Arquivo {
 	public static Integer [][][] verificaArquivoTeste(){
 		int k=0;
 		try {
-			for (int i = 0; i < 3; i++) {
+			for (int i = 0; i < maiorIdDoUsuario; i++) {
 				for (int j = 0; j< maiorIdDoItem; j++) {
 					//System.out.println("Matriz ["+(i+1)+"]["+(j+1)+"] = "+matriz[i+1][j+1][0]+ " Flag = " +matriz[i+1][j+1][1]) ;
 
