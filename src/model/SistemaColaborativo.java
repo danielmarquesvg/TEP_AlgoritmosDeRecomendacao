@@ -1,17 +1,25 @@
 package model;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
 public class SistemaColaborativo {
 
 	Arquivo arquivo = new Arquivo();
-	double array_similaridade [] = new double [3];
+	
+	int maior_item = arquivo.maiorIdDoItem;
+	int maior_usuario = 3;
+	double array_similaridade [] = new double [maior_item];
 	
 	public void print(Integer matriz [][][]){
 		//Integer matriz_sc[][] = arquivo.criaArray();
 		Integer matriz_sc[][][] = matriz;
 		
 		try {
-			for (int i = 0; i < 3; i++) {
-				for (int j = 0; j < matriz[0].length; j++) {
+			for (int i = 0; i < maior_usuario; i++) {
+				for (int j = 0; j < maior_item; j++) {
 					
 					System.out.println("MatrizSC ["+(i+1)+"]["+(j+1)+"] = "+matriz_sc[i+1][j+1][0]+" Flag = " + matriz_sc[i+1][j+1][1]);
 				}
@@ -23,39 +31,86 @@ public class SistemaColaborativo {
 		}
 	}
 	
-	public void preparaArray(Integer matriz [][]) {
+	//Prepara o array Analise(o que se pretente buscar uma predição) e array Compara (os outros usuarios)
+	public void preparaArray(Integer matriz [][][]){
 		
-		int array_usuarioAnalise [] = new int [1682]; //Notas do usuario para realizar predição
-		int array_usuarioCompara []	= new int [1682]; //Notas do usuario para buscar vizinho mais proximo
+		int array_usuarioAnalise [] = new int [maior_item]; //Notas do usuario para realizar predição
+		int array_usuarioCompara []	= new int [maior_item]; //Notas do usuario para buscar vizinho mais proximo
 		
 		
 		int usuario = 1;
 		int proximoUsuario = 1;
-				
-		while(usuario < 4){
-			
-			for (int j = 0; j < array_usuarioAnalise.length; j++) {
-				array_usuarioAnalise [j] = matriz [usuario][j+1]; //Atribuir notas do usuario 1
-				//System.out.println("array_usuarioAnalise = " +array_usuarioAnalise [j]);
-			}
-			
-			while(proximoUsuario < 1682){
-				
-				if(usuario == proximoUsuario){ //Verifica proximo usuario, para não comparar com  ele proprio
-					proximoUsuario++;	//Se for igual, incrementa para buscar o proximo usuario
-				}else{
-					for (int j = 0; j < array_usuarioAnalise.length; j++) {
-						array_usuarioCompara [j] = matriz [proximoUsuario][j+1]; ////Atribuir notas do usuario 2
-						//System.out.println("array_usuarioCompara = " +array_usuarioCompara [j]);
-					}
-					calculaSimilaridade(array_usuarioAnalise, array_usuarioCompara, proximoUsuario);
-					proximoUsuario++; //incrementa para buscar novo usuario, para ser comparado
-				}
+		
+		try {
+			//salvar arquivo para testar se dados estão corretos;
+			File arquivo = new File( "c:/Users/jaquelline/Desktop/dados.txt" );
+			FileWriter fw = new FileWriter( arquivo );
+			BufferedWriter bw = new BufferedWriter( fw );
+			//ao invés de ser substituído (append)
+			fw = new FileWriter( arquivo, true );
 
-			}
-			proximoUsuario = 1;
-			
-		}		
+			boolean existe = arquivo.exists();
+			//cria um arquivo (vazio)
+			arquivo.createNewFile();
+			 
+			//cria um diretório
+			arquivo.mkdir();			
+					
+			while(usuario <= maior_usuario){
+				
+				for (int j = 0; j < array_usuarioAnalise.length; j++) {
+					array_usuarioAnalise [j] = matriz [usuario][j+1][0]; //Atribuir notas do usuario 1				
+				}
+				
+				for (int i = 0; i < array_usuarioAnalise.length; i++) {
+					//System.out.print("array_usuarioAnalise ["+i+"]= " +array_usuarioAnalise [i]);
+					bw.write( "Usuario "+usuario+" | array_usuarioAnalise ["+i+"]= " +array_usuarioAnalise [i]);
+					bw.newLine();
+				}
+				System.out.println();
+				while(proximoUsuario <= maior_usuario){
+					
+					if(usuario == proximoUsuario){ //Verifica proximo usuario, para não comparar com  ele proprio
+						proximoUsuario++;	//Se for igual, incrementa para buscar o proximo usuario
+					}else{
+						try {
+							for (int j = 0; j < array_usuarioAnalise.length; j++) {
+								array_usuarioCompara [j] = matriz [proximoUsuario][j+1][0]; ////Atribuir notas do usuario 2
+								//System.out.println("array_usuarioCompara = " +array_usuarioCompara [j]);
+							}
+						} catch (Exception e) {
+							System.out.println("Problemas");
+						}
+						
+						for (int i = 0; i < array_usuarioCompara.length; i++) {
+							//System.out.print("array_usuarioCompara ["+i+"]= " +array_usuarioCompara [i]);
+							bw.write( "Proximo "+proximoUsuario+" | array_usuarioCompara ["+i+"]= " +array_usuarioCompara [i]);
+							bw.newLine();
+						}
+						System.out.println();
+						//calcular a similaridade entre o usuario analise e o que está comparando
+						calculaSimilaridade(array_usuarioAnalise, array_usuarioCompara, proximoUsuario);
+						proximoUsuario++; //incrementa para buscar novo usuario, para ser comparado
+					}
+					
+					
+				}
+								
+				// Verifica se o usuario a ser analizado ainda possui algum item com Falg 0, sem predição de rating diferente de 0
+				for (int i = 0; i < array_usuarioCompara.length; i++) {
+					if((matriz [usuario][i+1][1] == 0) && (matriz [usuario][i+1][0] == 0)){ 
+						System.out.println("Usuário ainda não possui todas as predições");
+					}else{
+						proximoUsuario = 1;
+						usuario++;
+					}
+				}
+									
+			}		
+			bw.close();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
 		
 	}
 	
@@ -67,6 +122,7 @@ public class SistemaColaborativo {
 		double similaridade = 0;
 		int contador_avaliacao=0;
 		
+		
 		for (int i = 0; i < array_usuarioCompara.length; i++) {
 						 
 			if((array_usuarioAnalise[i] != 0) && (array_usuarioCompara[i] != 0)){ //verifica se alguma posição é 0, se não, ambos avaliaram o mesmo produto
@@ -77,14 +133,15 @@ public class SistemaColaborativo {
 			}
 		}
 		
-		if(contador_avaliacao >= 2){ //verifica se houve mais de uma aviação em comum entre os usuarios
+		if(contador_avaliacao >= 2){ //verifica se houve mais de uma avaliação em comum entre os usuarios
 			similaridade = mult_array / (Math.sqrt(somatorioAnalise) * Math.sqrt(somatorioCompara)); //Calculo da formula da similaridade
-			System.out.println("Similarida = " + similaridade);
+			//System.out.println("Similarida = " + similaridade);
 			array_similaridade [usuario] = similaridade; //guarda resultados da porcentagem de todos os usuarios
 		}else{
 			array_similaridade [usuario] = 0;
+			//tem que criar uma flag pra esse caso para o metodo prepara array não entrar em loop;
 		}
-		
+		verificaVizinhoMaisProximo(2);		
 	}
 	
 	public void verificaVizinhoMaisProximo(int qntVizinhos){

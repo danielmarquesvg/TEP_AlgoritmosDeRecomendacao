@@ -24,6 +24,7 @@ public class Arquivo {
 	
 	static int maiorIdDoUsuario = 0;
 	static int maiorIdDoItem = 0;
+	static Integer matriz[][][];
 	
 	public static void carregarArquivos(FileReader fileReaderBase, FileReader fileReaderTeste){
 		fileReaderArquivoBase = fileReaderBase;
@@ -112,8 +113,8 @@ public class Arquivo {
 		
 		SistemaColaborativo p = new SistemaColaborativo();
 		Integer aux [][][] = criaArray();
-		p.print(aux);
-		//p.preparaArray(aux);
+		//p.print(aux);
+		p.preparaArray(aux);
 		
 		//System.out.print(arquivoTeste.get(0).userId+" "+arquivoTeste.get(0).itemId+" "+arquivoTeste.get(0).rating+" "+arquivoTeste.get(0).timeStamp+"\n");
 		//System.out.print(arquivoTeste.get(1).userId+" "+arquivoTeste.get(1).itemId+" "+arquivoTeste.get(1).rating+" "+arquivoTeste.get(1).timeStamp+"\n");
@@ -139,7 +140,7 @@ public class Arquivo {
 		}*/
 		
 		//Matriz refente a tabela associativa de usuario e produto
-		Integer matriz[][][] = new Integer [maior_id_usuario+1][maior_id_item+1][2];
+		matriz = new Integer [maior_id_usuario+1][maior_id_item+1][2];
 		
 		for (int i =0; i < matriz.length; i++) {
 			for (int j = 0; j < matriz[0].length; j++) {
@@ -172,10 +173,42 @@ public class Arquivo {
 			// TODO: handle exception
 			System.out.println("Carregamento concluido");
 		}
-		
+		matriz = verificaArquivoTeste();
+	//	for (int i = 0; i < 1; i++) {
+	//		for (int j = 0; j < maior_id_item; j++) {
+	//			System.out.println("Matriz ["+(i+1)+"]["+(j+1)+"] = "+matriz[i+1][j+1][0]+ " Flag = " +matriz[i+1][j+1][1]) ;
+	//
+	//		}
+	//	}
 		return matriz;
 	}
 
+	public static Integer [][][] verificaArquivoTeste(){
+		int k=0;
+		try {
+			for (int i = 0; i < 3; i++) {
+				for (int j = 0; j< maiorIdDoItem; j++) {
+					//System.out.println("Matriz ["+(i+1)+"]["+(j+1)+"] = "+matriz[i+1][j+1][0]+ " Flag = " +matriz[i+1][j+1][1]) ;
+
+					if(matriz[i+1][j+1][1] == -1){
+						if((j+1) == Integer.parseInt(arquivoTeste.get(k).itemId)){
+							matriz[i+1][j+1][1] = 0; //zero para os itens que estão no arquivo teste
+							k++;
+							//System.out.println("Matriz ["+(i+1)+"]["+(j+1)+"] = "+matriz[i+1][j+1][0]+ " Flag = " +matriz[i+1][j+1][1]) ;
+
+						}
+					}
+				}				
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		
+		return matriz;
+		
+	}
+	
+	
 	//metodo para calcular erro medio RMSE
 	public static void erro_rmse (){
 		//System.out.println(arquivoBase.get(1).rating);
