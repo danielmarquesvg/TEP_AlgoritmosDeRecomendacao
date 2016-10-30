@@ -49,7 +49,7 @@ public class SistemaColaborativo {
 		try {
 			
 			//salvar arquivo para testar se dados estão corretos;
-			File arquivo = new File( "c:/Users/jaquelline/Desktop/predicao_u1.txt" );
+			File arquivo = new File( "c:/Users/jaquelline/Desktop/predicao_u4.txt" );
 			FileWriter fw = new FileWriter(arquivo);
 			
 			//ao invés de ser substituído (append)
@@ -121,7 +121,7 @@ public class SistemaColaborativo {
 							
 						}
 						//printarray(array_similaridade);
-						matriz = verificaVizinhoMaisProximo(2, matriz);
+						matriz = verificaVizinhoMaisProximo(5, matriz);
 						
 						System.out.println(usuario_rating+ "\t" +item_rating+"\t"+media_final);
 						
@@ -181,7 +181,7 @@ public class SistemaColaborativo {
 				}
 			}
 			
-			if(contador_avaliacao >= 2){ //verifica se houve mais de uma avaliação em comum entre os usuarios
+			if(contador_avaliacao > 0){ //verifica se houve mais de uma avaliação em comum entre os usuarios
 				similaridade = mult_array / (Math.sqrt(somatorioAnalise) * Math.sqrt(somatorioCompara)); //Calculo da formula da similaridade
 	//			System.out.println("usuario"+ usuario+ "Similarida = " + similaridade);
 				array_similaridade [usuario] = similaridade; //guarda resultados da porcentagem de todos os usuarios
