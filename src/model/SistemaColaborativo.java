@@ -49,7 +49,7 @@ public class SistemaColaborativo {
 		try {
 			
 			//salvar arquivo para testar se dados estão corretos;
-			File arquivo = new File( "c:/Users/jaquelline/Desktop/predicao_u5.txt" );
+			File arquivo = new File(System.getProperty("user.home")+"/Desktop/u1_predicao.txt");
 			FileWriter fw = new FileWriter(arquivo);
 			
 			//ao invés de ser substituído (append)

@@ -8,7 +8,10 @@ import javax.swing.JPanel;
 public class FramePrincipal extends JFrame {
 
 	public static JPanel contentPane;
+	public static PanelGerarArquivoDePredicao panelGerarArquivoDePredicao = new PanelGerarArquivoDePredicao();
 	public static PanelPrincipal panelPrincipal = new PanelPrincipal();
+	public static PanelCalculoDoErro panelCalculoDoErro = new PanelCalculoDoErro();
+	public static String escolha = "";
 
 	/**
 	 * Launch the application.
@@ -46,5 +49,13 @@ public class FramePrincipal extends JFrame {
 		contentPane.add(panelPrincipal);
 		setVisible(true);
 		
+	}
+	
+	public static String escolha(){
+		return escolha;
+	}
+	
+	public static void modificarEscolha(String opcaoEscolhida){
+		escolha = opcaoEscolhida;
 	}
 }

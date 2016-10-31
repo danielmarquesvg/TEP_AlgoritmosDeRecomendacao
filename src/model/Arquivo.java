@@ -11,6 +11,9 @@ import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
+import interfaceGrafica.FramePrincipal;
+import interfaceGrafica.PanelCalculoDoErro;
+
 public class Arquivo {
 	
 	//static Aleatoria aleatoria = new Aleatoria();
@@ -41,7 +44,7 @@ public class Arquivo {
 			String linhaArquivoBase = bufferedReaderArquivoBase.readLine();
 			String linhaArquivoTeste = bufferedReaderArquivoTeste.readLine();
 			
-			File arquivo = new File( "c:/Users/jaquelline/Desktop/predicao.txt" );
+			File arquivo = new File(System.getProperty("user.home")+"/Desktop/predicao.txt");
 			FileWriter fw = new FileWriter( arquivo );
 			BufferedWriter bw = new BufferedWriter( fw );
 			//ao invés de ser substituído (append)
@@ -96,13 +99,23 @@ public class Arquivo {
 				//quebra de linha
 				bw.newLine();
 				linhaArquivoTeste = bufferedReaderArquivoTeste.readLine();
+				
 			}
 			
-			erro_rmse();
+			
+			if(FramePrincipal.escolha().equals("Calcular Erro")){
+				erro_rmse();
+			} else {
+				SistemaColaborativo p = new SistemaColaborativo();
+				Integer aux [][][] = criaArray();
+				p.print(aux);
+				p.preparaArray(aux);
+			}
+			//erro_rmse();
 		
 			//fecha os recursos
-			//bw.close();
-			//fw.close();
+			bw.close();
+			fw.close();
 						
 			
 		} catch (IOException e) {
@@ -111,10 +124,10 @@ public class Arquivo {
 		}
 		
 		
-		SistemaColaborativo p = new SistemaColaborativo();
-		Integer aux [][][] = criaArray();
+		//SistemaColaborativo p = new SistemaColaborativo();
+		//Integer aux [][][] = criaArray();
 		//p.print(aux);
-	//	p.preparaArray(aux);
+		//p.preparaArray(aux);
 		
 		//System.out.print(arquivoTeste.get(0).userId+" "+arquivoTeste.get(0).itemId+" "+arquivoTeste.get(0).rating+" "+arquivoTeste.get(0).timeStamp+"\n");
 		//System.out.print(arquivoTeste.get(1).userId+" "+arquivoTeste.get(1).itemId+" "+arquivoTeste.get(1).rating+" "+arquivoTeste.get(1).timeStamp+"\n");
@@ -236,6 +249,7 @@ public class Arquivo {
 
 		double rmse= Math.sqrt(somatorio/(double)n);
 		System.out.println("EMSE = " + rmse);
+		PanelCalculoDoErro.modificarErro(String.valueOf(rmse));
 	}
 	
 
