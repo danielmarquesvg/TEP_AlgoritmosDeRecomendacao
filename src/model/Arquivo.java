@@ -82,9 +82,9 @@ public class Arquivo {
 				String userId = arrayLinha[0];
 				String itemId = arrayLinha[1];
 				String rating = arrayLinha[2];
-				String timeStamp = arrayLinha[3];
+				//String timeStamp = arrayLinha[3];
 				
-				Registro registro = new Registro(userId, itemId, rating, timeStamp);
+				Registro registro = new Registro(userId, itemId, rating, "100000");
 				arquivoTeste.add(registro);
 				
 				//Registro registro2 = new Registro(userId, itemId, gera_aleatorio(), timeStamp);
@@ -98,7 +98,7 @@ public class Arquivo {
 				linhaArquivoTeste = bufferedReaderArquivoTeste.readLine();
 			}
 			
-			//erro_rmse();
+			erro_rmse();
 		
 			//fecha os recursos
 			//bw.close();
@@ -114,7 +114,7 @@ public class Arquivo {
 		SistemaColaborativo p = new SistemaColaborativo();
 		Integer aux [][][] = criaArray();
 		//p.print(aux);
-		p.preparaArray(aux);
+	//	p.preparaArray(aux);
 		
 		//System.out.print(arquivoTeste.get(0).userId+" "+arquivoTeste.get(0).itemId+" "+arquivoTeste.get(0).rating+" "+arquivoTeste.get(0).timeStamp+"\n");
 		//System.out.print(arquivoTeste.get(1).userId+" "+arquivoTeste.get(1).itemId+" "+arquivoTeste.get(1).rating+" "+arquivoTeste.get(1).timeStamp+"\n");
@@ -221,13 +221,16 @@ public class Arquivo {
 		
 		for (int i = 0; i < n; i++) {
 			
-			int ratingTeste = Integer.parseInt(arquivoTeste.get(i).rating);
+			int ratingTeste = Integer.parseInt(arquivoBase.get(i).rating);
 			
-			//System.out.println(arquivoTeste.get(i).rating +"\t+ " +arquivoPredicao.get(i).rating);
+			System.out.println(arquivoBase.get(i).rating +"\t+ " +arquivoTeste.get(i).rating);
 			
-			int ratingPredicao = Integer.parseInt(arquivoPredicao.get(i).rating);
-			double subtracao = ratingTeste - ratingPredicao;
-			somatorio = somatorio + Math.pow(subtracao, 2.0);
+			int ratingPredicao = Integer.parseInt(arquivoTeste.get(i).rating);
+			if(Integer.parseInt(arquivoTeste.get(i).rating) != 0){
+				double subtracao = ratingTeste - ratingPredicao;
+				somatorio = somatorio + Math.pow(subtracao, 2.0);
+			}
+			
 			
 		}
 
